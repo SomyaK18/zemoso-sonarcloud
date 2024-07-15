@@ -1,30 +1,20 @@
-name: github_actions_workflow
+name: "sonar_cloud_scan_github_actions"
 on:
- push:
-   branches:
-     - master
- pull_request:
-   types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
 jobs:
- sonarcloud:
-   if: startsWith(github.head_ref, 'FE_') && github.event.pull_request.merged == false
-   name: zemoso-sonarcloud
-   runs-on: ubuntu-latest
-   defaults:
-     run:
-       working-directory: ./green-commute
-   steps:
-     - uses: actions/checkout@v3
-       with:
-         fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-     - name: Install Dependencies
-       run: npm install --legacy-peer-deps
-     - name: Test and coverage
-       run: npm test src/
-     - name: SonarCloud Scan
-       with:
-         projectBaseDir: ./green-commute
-       uses: SonarSource/sonarcloud-github-action@master
-       env:
-         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  DemoSonarCloudSCan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+            GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+              -Dsonar.organization=SomyaK18
+              -Dsonar.projectKey=zemoso-sonarcloud
