@@ -8,7 +8,7 @@ on:
 jobs:
  sonarcloud:
    if: startsWith(github.head_ref, 'FE_') && github.event.pull_request.merged == false
-   name: SonarCloud
+   name: zemoso-sonarcloud
    runs-on: ubuntu-latest
    defaults:
      run:
